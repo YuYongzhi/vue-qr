@@ -1,5 +1,5 @@
 {
-  "name": "vue-qr",
+  "name": "maitao-vue-qr",
   "version": "4.0.9",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --host 0.0.0.0",

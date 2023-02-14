@@ -9,9 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import canvas from "../../packages/skia-canvas-lib/lib/browser";
 const { Canvas } = canvas;
-import { decompressFrames, parseGIF } from "./gifuct-js/index";
 import { QRCodeModel, QRErrorCorrectLevel, QRUtil } from "./qrcode";
-import GIFEncoder from "./gif.js/GIFEncoder";
 const defaultScale = 0.4;
 function loadImage(url) {
     if (!url) {
@@ -209,6 +207,7 @@ export class AwesomeQR {
             let parsedGIFBackground = null;
             let gifFrames = [];
             if (!!this.options.gifBackground) {
+                const { decompressFrames, parseGIF } = require("./gifuct-js/index");
                 const gif = parseGIF(this.options.gifBackground);
                 parsedGIFBackground = gif;
                 gifFrames = decompressFrames(gif, true);
@@ -260,10 +259,10 @@ export class AwesomeQR {
                     for (let i = 1; i < alignmentPatternCenters.length - 1; i++) {
                         isProtected =
                             isProtected ||
-                                (row >= alignmentPatternCenters[i] - 2 &&
-                                    row <= alignmentPatternCenters[i] + 2 &&
-                                    col >= alignmentPatternCenters[i] - 2 &&
-                                    col <= alignmentPatternCenters[i] + 2);
+                            (row >= alignmentPatternCenters[i] - 2 &&
+                                row <= alignmentPatternCenters[i] + 2 &&
+                                col >= alignmentPatternCenters[i] - 2 &&
+                                col <= alignmentPatternCenters[i] + 2);
                     }
                     const nLeft = col * nSize + (isProtected ? 0 : dataXyOffset * nSize);
                     const nTop = row * nSize + (isProtected ? 0 : dataXyOffset * nSize);
@@ -427,9 +426,11 @@ export class AwesomeQR {
                 let patchCanvas;
                 let patchCanvasContext;
                 let patchData;
+
+                const GIFEncoder = require("./gif.js/GIFEncoder");
                 gifFrames.forEach(function (frame) {
                     if (!gifOutput) {
-                        gifOutput = new GIFEncoder(rawSize, rawSize);
+                        gifOutput = new GIFEncoder.default(rawSize, rawSize);
                         gifOutput.setDelay(frame.delay);
                         gifOutput.setRepeat(0);
                     }
